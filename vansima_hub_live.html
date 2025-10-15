@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vansima Hub</title>
+  <canvas id="particleCanvas"></canvas>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #480ceb;
+      text-shadow: 0 0 10px 00ffe5;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 40px;
+    }
+
+    form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    input[type="email"] {
+      padding: 15px;
+      border-radius: 5px;
+      border: none;
+      width: 300px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 15px 25px;
+      border-radius: 5px;
+      border: none;
+      background: #0ff;
+      color: #000;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #f0f;
+      color: #fff;
+      box-shadow: 0 0 15px #f0f, 0 0 25px #0ff;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      color: rgb(255, 255, 0);
+    }
+
+    /* Animated background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,255,255,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: moveGrid 20s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes moveGrid {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-50px, -50px); }
+    }
+
+    .quote {
+      margin-top: 40px;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: rgb(17, 136, 45);
+      text-shadow: 0 0 5px rgb(0, 4, 255);
+    }
+
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -2;
+    }
+    
+   .main-content {
+    position: relative;
+    z-index: 1;
+   }
+  </style>
+</head>
+<body>
+
+  <h1>Vansima Hub</h1>
+  <p>The Future is Yours.</p>
+  <p>Subscribe for updates, exclusive offers, and daily motivation!</p>
+
+  <form onsubmit="subscribe(event)">
+    <input type="email" placeholder="Enter your email..." required>
+    <button type="submit">Subscribe</button>
+  </form>
+
+  <div id="dailyQuote" class="quote-box">
+    <p id="quote-text">Loading your daily motivation...</p>
+    <p id="quote-author"></p>
+  </div>
+
+  <footer>
+    &copy; 2025 Vansima. All rights reserved.
+  </footer>
+
+  <script>
+async function getDailyQuote() {
+  const quoteText = document.getElementById('quote-text');
+  const quoteAuthor = document.getElementById('quote-author');
+
+  try {
+    const response = await fetch('https://api.quotable.io/random');
+    const data = await response.json();
+
+    quoteText.textContent = `"${data.content}"`;
+    quoteAuthor.textContent = `– ${data.author}`;
+  } catch (error) {
+    quoteText.textContent = "Couldn’t load your daily quote. Try again later!";
+    console.error("Error fetching quote:", error);
+  }
+}
+
+getDailyQuote();
+</script>
+
+
+  <script>
+const canvas = document.getElementById("particleCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 1;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.alpha = Math.random() * 0.5 + 0.3;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+    }
+  }
+  draw() {
+    ctx.fillStyle = `rgba(0, 255, 255, ${this.alpha})`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = [];
+  for (let i = 0; i < 100; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+    particles[i].draw();
+  }
+  requestAnimationFrame(animateParticles);
+}
+
+initParticles();
+animateParticles();
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  initParticles();
+});
+</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vansima Digital</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <header> 
+    <nav class="navbar">
+      <div class="logo">VANSIMA</div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="./vansima_hub_live.html">Hub</a></li>
+        <li><a href="#newsletter">Join</a></li>
+        <li><a href="./cart.html">Cart 🛒</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <script scr="https://js.stripe.com/v3/"></script>
+  <script src="cart.js"></script>
+
+  <!-- Hero Banner -->
+  <section class="hero futuristic-display">
+    <div class="silhouette"></div>
+    <div class="floating-block dream">Dreams</div>
+    <div class="floating-block focus">Focus</div>
+    <div class="floating-block freedom">Freedom</div>
+    <div class="floating-block productivity">Productivity</div>
+
+    <div class="hero-text">
+      <h1>Build Your Life, Your Way</h1>
+      <p>Digital planners, journals & tools for a productive lifestyle.</p>
+      <a href="#shop" class="btn-hero">Explore the Collection</a>
+    </div>
+  </section>
+
+
+
+  <!-- Digital Storefront -->
+  <section id="shop" class="store">
+    <h2>Digital Tools</h2>
+    <div class="product-grid">
+
+      <div class="product-card" data-product-id="ebook-001">
+        <img src="IMG_1343.jpeg" alt="Vansima eBook">
+        <h3 class="product-name">Vansima eBook</h3>
+        <p class="product-price">$12.99</p>
+        <button class="add-to-cart"
+                data-product-id="ebook-001"
+                data-name="Vansima eBook"
+                data-price="$12.99"
+                data-image="/images/IMG_1343.jpeg">
+          Add to Cart
+        </button> 
+      </div>
+
+      <div class="product-card" data-product-id="planner-001">
+        <img src="86DB479F-B12B-456C-81B8-DB742A32B154.PNG" alt="Vansima Planner">
+        <h3 class="product-name">Vansima Planner</h3>
+        <p class="product-price">$14.99</p>
+        
+        <button class="add-to-cart"
+                data-product-id="planner-001"
+                data-name="Planner"
+                data-price="$14.99"
+                data-image="/images/86DB479F-B12B-456C-81B8-DB742A32B154.PNG">
+          Add to Cart
+        </button>
+      </div>
+
+      <div class="product-card" data-product-id="journal-001">
+        <img src="75784C7A-EAA5-44D6-AFBF-59ECDEE80E5D.PNG" alt="vansima Journal">
+        <h3 class="product-name">Vansima Journal</h3>
+        <p class="product-price">$14.99</p>
+        <button class="add-to-cart"
+                data-product-id="journal-001"
+                data-name="Vansima Journal"
+                data-price="$14.99"
+                data-image="/images/75784C7A-EAA5-44D6-AFBF-59ECDEE80E5D.PNG">
+          Add to Cart
+        </button>
+      </div>
+
+      <div class="product-card" data-product-id="bundle-001">
+        <img src="EB31467B-FFA8-4539-9B2E-E22912497210.PNG" alt="Vansima Digital Bundle">
+        <h3 class="product-name">Vansima Digital Bundle</h3>
+        <p class="product-price">$39.99</p>
+        <button class="add-to-cart"
+                data-product-id="bundle-001"
+                data-name="Vansima Digital Bundle"
+                data-price="$39.99"
+                data-image="/images/EB31467B-FFA8-4539-9B2E-E22912497210.PNG">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vansima Hub -->
+  <section id="hub" class="hub">
+    <h2>The Vansima Hub</h2>
+    <p>Discover daily quotes, focus playlists, and lifestyle guides.</p>
+    <a href="./vansima_hub_live.html" class="btn">Enter the Hub</a>
+  </section>
+
+  <!-- Newsletter -->
+  <section id="newsletter" class="newsletter">
+    <h2>Join the Vansima Movement</h2>
+    <p>Exclusive tools, tips, and updates delivered to your inbox.</p>
+    <form>
+      <input type="email" placeholder="Enter your email" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Vansima Digital. All rights reserved.</p>
+  </footer>
+</body>
+</html>
