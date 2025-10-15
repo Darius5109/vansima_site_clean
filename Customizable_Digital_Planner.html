@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planner</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0a0a0f;
+      color: #e0e0e0;
+      font-family: 'Orbitron', sans-serif;
+      transition: background 0.5s ease-in-out;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(20, 20, 30, 0.8);
+      padding: 10px 20px;
+      box-shadow: 0 0 15px #00bfff33;
+      position: relative;
+      z-index: 10;
+    }
+    .toolbar label {
+      color: #00bfff;
+      font-size: 0.9em;
+      margin-right: 10px;
+    }
+    .toolbar select, .toolbar input[type="file"] {
+      background: rgba(255,255,255,0.05);
+      color: #e0e0e0;
+      border: 1px solid #00bfff55;
+      border-radius: 6px;
+      padding: 5px;
+      font-size: 0.9em;
+      outline: none;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: rgba(20, 20, 30, 0.75);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px #00bfff33;
+      transition: background 0.5s;
+    }
+    h1 {
+      text-align: center;
+      color: #00bfff;
+      text-shadow: 0 0 8px #00bfff;
+    }
+    .title-input {
+      display: block;
+      margin: 10px auto 30px auto;
+      text-align: center;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #00bfff;
+      color: #e0e0e0;
+      font-size: 1.5em;
+      width: 80%;
+      outline: none;
+      text-transform: uppercase;
+    }
+    label.section {
+      color: #00bfff;
+      font-size: 1.2em;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid #00bfff33;
+      color: #e0e0e0;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 1em;
+      margin-top: 6px;
+      margin-bottom: 20px;
+      outline: none;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #888;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div>
+      <label>🎨 Background:</label>
+      <select id="bgSelect">
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+        <option value="gradient">Gradient</option>
+      </select>
+      <input type="file" id="bgUpload" accept="image/*">
+    </div>
+    <div>
+      <label>✍️ Font:</label>
+      <select id="fontSelect">
+        <option value="'Orbitron', sans-serif">Orbitron</option>
+        <option value="'Poppins', sans-serif">Poppins</option>
+        <option value="'Roboto', sans-serif">Roboto</option>
+        <option value="'Playfair Display', serif">Playfair Display</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>PLANNER</h1>
+    <input class="title-input" type="text" id="title" placeholder="Enter Your Planner Title...">
+    <label class="section">Date:</label>
+    <input type="text" id="date" placeholder="MM/DD/YYYY">
+    <label class="section">Top 3 Priorities:</label>
+    <input type="text" id="priority1" placeholder="1.">
+    <input type="text" id="priority2" placeholder="2.">
+    <input type="text" id="priority3" placeholder="3.">
+    <label class="section">Schedule:</label>
+    <textarea id="schedule" placeholder="Write your hourly schedule or to-do list here..."></textarea>
+    <label class="section">Notes / Ideas:</label>
+    <textarea id="notes" placeholder="Write any thoughts, reflections, or ideas..."></textarea>
+    <div class="footer">Focus on the future you’re building.</div>
+  </div>
+
+  <script>
+    const bgSelect = document.getElementById('bgSelect');
+    const bgUpload = document.getElementById('bgUpload');
+    const fontSelect = document.getElementById('fontSelect');
+    const body = document.body;
+    const container = document.querySelector('.container');
+
+    // Restore saved settings
+    window.onload = function() {
+      const savedBg = localStorage.getItem('plannerBg');
+      const savedFont = localStorage.getItem('plannerFont');
+      const savedImage = localStorage.getItem('plannerBgImage');
+      const inputs = document.querySelectorAll('input, textarea');
+
+      if (savedFont) document.body.style.fontFamily = savedFont;
+      if (savedBg) applyBackground(savedBg, savedImage);
+
+      inputs.forEach(input => {
+        const id = input.id;
+        if (localStorage.getItem(id)) input.value = localStorage.getItem(id);
+        input.addEventListener('input', () => {
+          localStorage.setItem(id, input.value);
+        });
+      });
+    };
+
+    // Change background themes
+    bgSelect.addEventListener('change', () => {
+      applyBackground(bgSelect.value);
+      localStorage.setItem('plannerBg', bgSelect.value);
+    });
+
+    // Handle font change
+    fontSelect.addEventListener('change', () => {
+      document.body.style.fontFamily = fontSelect.value;
+      localStorage.setItem('plannerFont', fontSelect.value);
+    });
+
+    // Upload custom background
+    bgUpload.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const imageUrl = e.target.result;
+          body.style.backgroundImage = `url(${imageUrl})`;
+          body.style.backgroundSize = 'cover';
+          body.style.backgroundPosition = 'center';
+          localStorage.setItem('plannerBgImage', imageUrl);
+          localStorage.setItem('plannerBg', 'custom');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Apply background
+    function applyBackground(type, imageUrl = null) {
+      body.style.backgroundImage = 'none';
+      if (type === 'dark') {
+        body.style.backgroundColor = '#0a0a0f';
+      } else if (type === 'light') {
+        body.style.backgroundColor = '#f0f0f0';
+        body.style.color = '#111';
+      } else if (type === 'gradient') {
+        body.style.background = 'linear-gradient(135deg, #001f3f, #00bfff)';
+      } else if (type === 'custom' && imageUrl) {
+        body.style.backgroundImage = `url(${imageUrl})`;
+        body.style.backgroundSize = 'cover';
+        body.style.backgroundPosition = 'center';
+      }
+    }
+  </script>
+</body>
+</html>

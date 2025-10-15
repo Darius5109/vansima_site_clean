@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart - Vansima Digital</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+     body {
+    font-family: 'Poppins', sans-serif;
+    background: #f6f7fb;
+    color: #222;
+    margin: 0;
+    padding: 0;
+  }
+
+  header {
+    background-color: #0d0d0d;
+    color: white;
+    padding: 1.2rem 2rem;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 30px;
+    color: #111;
+  }
+
+  #cart-items {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    padding: 25px 30px;
+  }
+
+  .cart-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+  }
+
+  .cart-row:last-child {
+    border-bottom: none;
+  }
+
+  .cart-thumb img {
+    width: 100px;
+    border-radius: 8px;
+  }
+
+  .cart-body {
+    flex: 1;
+    margin-left: 20px;
+  }
+
+  .cart-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .cart-price {
+    color: #27ae60;
+    margin: 5px 0;
+    font-weight: 500;
+  }
+
+  .cart-qty input {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+  }
+
+  .remove-item {
+    background: none;
+    border: none;
+    color: #ff3b30;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: color 0.2s;
+  }
+
+  .remove-item:hover {
+    color: #b30000;
+  }
+
+  #cart-total-section {
+    text-align: right;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+  }
+  #cart-total-section h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #111;
+}
+  #checkout-button {
+    background-color: #0d0d0d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  #checkout-button:hover {
+    background-color: #333;
+  }
+ </style>
+</head>
+<body>
+
+  <header>
+    <nav class="navbar">
+      <div class="logo">VANSIMA</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="vansima_hub_live.html">Hub</a></li>
+        <li><a href="bundles.html">Bundles</a></li>
+        <li><a href="ebooks.html">eBooks</a></li>
+        <li><a href="cart.html" class="active">Cart</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="cart-page">
+    <h1>Your Shopping Cart</h1>
+    <div id="cart-items"></div>
+
+    <div class="cart-summary">
+      <h3>Total: <span id="cart-total">0.00</span></h3>
+      <button id="checkout-button">Checkout</button>
+    </div>
+  </main>
+
+  <script src="./cart.js"></script>
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+    const CART_KEY = 'vansima_cart_v1';
+
+    // Load and display items
+    const cartItems = JSON.parse(localStorage.getItem('vansima_cart_v1')) || [];
+    const cartContainer = document.createElement('div');
+    const cartList = document.getElementById('cart-items');
+    let total = 0;
+
+    cartItems.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.innerHTML = `
+            <img src="${item.image}" width="80">
+            <p>${item.name}</p>
+            <p>$${item.price}</p>
+            <hr>
+        `;
+        cartContainer.appendChild(itemDiv);
+        total += parseFloat(item.price.replace('$', ''));
+    });
+
+    cartList.appendChild(cartContainer);
+    document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`;
+
+    // Checkout button
+    const checkoutBtn = document.getElementById('checkout-button');
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', function() {
+            if (cartItems.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            localStorage.setItem('checkout_cart', JSON.stringify(cartItems));
+            window.location.href = 'vansima_checkout.html';
+        });
+    }
+});
+</script>
+</body>
+</html>

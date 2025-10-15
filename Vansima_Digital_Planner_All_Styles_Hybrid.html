@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vansima Digital Planner — All Styles Hybrid (Focus Edition)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#071024;
+    --surface:rgba(255,255,255,0.03);
+    --text:#eaf2ff;
+    --accent:#00bfff;
+    --radius:12px;
+    --transition:300ms;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);transition:background var(--transition),color var(--transition);padding:20px;}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+  h1{margin:0;font-size:18px;font-weight:700}
+  .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .panel{background:rgba(255,255,255,0.03);padding:12px;border-radius:var(--radius);box-shadow:0 8px 20px rgba(2,6,23,0.6);transition:transform var(--transition)}
+  .panel:hover{transform:translateY(-3px)}
+  .settings{width:360px;display:grid;gap:10px}
+  label{font-size:13px;opacity:0.9}
+  input[type="color"], input[type="file"], select, input[type="text"]{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+  .grid{display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start}
+  .planner{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);min-height:560px;overflow:auto}
+  .section{background:rgba(0,0,0,0.08);padding:12px;border-radius:10px;margin-bottom:12px;transition:box-shadow var(--transition), background var(--transition)}
+  textarea{width:100%;min-height:80px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);padding:10px;background:transparent;color:inherit;resize:vertical}
+  .small-input{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+  .preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .theme-btn{padding:8px;border-radius:8px;border:none;cursor:pointer;font-weight:600;min-height:46px;display:flex;align-items:center;justify-content:center}
+  .preview{padding:12px;border-radius:10px;min-height:180px;width:100%;overflow:hidden}
+  .accent-preview{height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  button.primary{background:var(--accent);color:#001; padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
+  button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit;padding:8px 10px;border-radius:8px;cursor:pointer}
+  .saved-themes{display:flex;gap:8px;flex-wrap:wrap}
+  .saved-theme{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.02);cursor:pointer;font-size:13px}
+  .tools{display:flex;flex-direction:column;gap:10px}
+  .upload-note{font-size:12px;opacity:0.85}
+  .sticky-toolbar{position:sticky;top:12px}
+  /* animated gradient */
+  .animated-bg{background-size:400% 400%;animation:grad 12s ease infinite}
+  @keyframes grad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  @media (max-width:980px){.grid{grid-template-columns:1fr} .settings{width:100%}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Lets plan & Conquer</h1>
+    <div style="font-size:13px;opacity:0.8">Planner-focused defaults + full customization</div>
+  </div>
+  <div class="toolbar">
+    <div class="panel" style="display:flex;gap:8px;align-items:center">
+      <div style="font-size:13px;opacity:0.9">Title</div>
+      <input id="planner-title" type="text" class="small-input" placeholder="Your Planner Title">
+    </div>
+    <div class="panel" style="display:flex;gap:8px;align-items:center">
+      <button id="download-planner" class="primary">Export Snapshot</button>
+      <button id="apply-random-planner" class="ghost">Random Theme</button>
+    </div>
+  </div>
+</header>
+
+<main class="grid">
+  <section class="planner panel">
+    <div class="section">
+      <label>Planner Title (Preview)</label>
+      <div id="title-preview" style="font-size:16px;font-weight:700;margin-top:6px"></div>
+    </div>
+
+    <div class="section">
+      <label>Date</label>
+      <input id="date" class="small-input" placeholder="MM/DD/YYYY">
+    </div>
+
+    <div class="section">
+      <label>Top 3 Priorities</label>
+      <input id="priority1" class="small-input" placeholder="1.">
+      <input id="priority2" class="small-input" placeholder="2.">
+      <input id="priority3" class="small-input" placeholder="3.">
+    </div>
+
+    <div class="section">
+      <label>Schedule</label>
+      <textarea id="schedule" placeholder="Hourly schedule or tasks..."></textarea>
+    </div>
+
+    <div class="section">
+      <label>Notes / Ideas</label>
+      <textarea id="notes" placeholder="Notes, reflections, ideas..."></textarea>
+    </div>
+
+    <div class="section actions">
+      <button id="save-data" class="primary">Save Planner</button>
+      <button id="clear-data" class="ghost">Clear Entries</button>
+      <button id="export-theme" class="ghost">Export Theme JSON</button>
+      <button id="import-theme" class="ghost">Import Theme</button>
+    </div>
+  </section>
+
+  <aside class="sticky-toolbar">
+    <div class="panel settings">
+      <strong>Customize Planner</strong>
+      <label>Background (solid or gradient)</label>
+      <input id="bg-color" type="color" value="#071024">
+      <input id="bg-color-2" type="color" value="#0b2740">
+      <label style="display:flex;align-items:center;gap:8px"><input id="use-gradient" type="checkbox"> Use Gradient</label>
+
+      <label>Upload Your Own Background</label>
+      <input id="bg-upload" type="file" accept="image/*">
+      <div class="upload-note">Uploaded images are stored locally in your browser.</div>
+
+      <label>Text Color</label>
+      <input id="text-color" type="color" value="#eaf2ff">
+
+      <label>Accent Color</label>
+      <input id="accent-color" type="color" value="#00bfff">
+
+      <label>Font</label>
+      <select id="font-select">
+        <option value="Inter, Arial, sans-serif">Inter (Modern)</option>
+        <option value="'Poppins', Inter, Arial, sans-serif">Poppins (Friendly)</option>
+        <option value="'Roboto', Inter, Arial, sans-serif">Roboto (Clean)</option>
+        <option value="'Playfair Display', serif">Playfair (Elegant)</option>
+      </select>
+
+      <label>Theme Name (for saving)</label>
+      <input id="theme-name" type="text" placeholder="e.g. Steel Focus">
+
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="save-theme" class="primary">Save My Theme</button>
+        <button id="reset-theme" class="ghost">Reset</button>
+      </div>
+
+      <div style="margin-top:12px">
+        <strong>Presets</strong>
+        <div class="preset-grid" id="preset-grid" style="margin-top:8px">
+          <!-- presets will be populated by JS -->
+        </div>
+      </div>
+
+      <div style="margin-top:10px">
+        <strong>Saved Themes</strong>
+        <div class="saved-themes" id="saved-themes"></div>
+      </div>
+    </div>
+
+    <div class="panel preview" id="live-preview" style="margin-top:12px;width:360px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-weight:700">Live Preview</div>
+        <div id="preview-meta" style="font-size:12px;opacity:0.85"></div>
+      </div>
+      <div style="height:10px"></div>
+      <div id="preview-content" style="border-radius:8px;padding:12px">
+        <div id="preview-header" style="border-radius:6px;padding:8px">Planner Header</div>
+        <div style="height:8px"></div>
+        <div style="display:flex;gap:8px">
+          <div style="flex:1;background:rgba(255,255,255,0.02);border-radius:6px;padding:8px">Schedule</div>
+          <div style="width:80px;background:rgba(255,255,255,0.02);border-radius:6px;padding:8px">Priorities</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<div style="margin-top:14px;font-size:13px;opacity:0.85">All planner settings and uploads are stored locally in your browser.</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// helpers
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+// elements
+const bgColor = $('#bg-color'), bgColor2 = $('#bg-color-2'), useGradient = $('#use-gradient');
+const textColor = $('#text-color'), accentColor = $('#accent-color'), fontSelect = $('#font-select');
+const bgUpload = $('#bg-upload');
+const preview = $('#live-preview'), previewContent = $('#preview-content'), previewMeta = $('#preview-meta');
+const titleInput = $('#planner-title'), titlePreview = $('#title-preview');
+const saveThemeBtn = $('#save-theme'), resetBtn = $('#reset-theme'), savedThemesWrap = $('#saved-themes');
+const themeNameInput = $('#theme-name'), presetGrid = $('#preset-grid');
+const downloadBtn = $('#download-planner'), applyRandom = $('#apply-random-planner');
+const saveDataBtn = $('#save-data'), clearDataBtn = $('#clear-data');
+const exportThemeBtn = $('#export-theme'), importThemeBtn = $('#import-theme');
+
+// planner inputs
+const dateInput = $('#date'), p1 = $('#priority1'), p2 = $('#priority2'), p3 = $('#priority3'), schedule = $('#schedule'), notes = $('#notes');
+
+// default theme set
+const DEFAULT = { name:'Planner Default', bg:'#071024', bg2:'#0b2740', gradient:true, text:'#eaf2ff', accent:'#00bfff', font:'Inter, Arial, sans-serif', animated:false, image:null };
+
+// presets array (includes productivity-focused ones + others)
+const PRESETS = [
+  {name:'Steel Focus', bg:'#f6f7fb', bg2:'#eef1f6', gradient:true, text:'#0b1226', accent:'#4b5563', font:'Inter, Arial, sans-serif', animated:false},
+  {name:'Calm Workspace', bg:'#ffffff', bg2:'#f8fafc', gradient:true, text:'#0b1226', accent:'#2563eb', font:'Inter, Arial, sans-serif', animated:false},
+  {name:'Digital Zen', bg:'#e8fbff', bg2:'#e3f8ff', gradient:true, text:'#063447', accent:'#00a8cc', font:'Inter, Arial, sans-serif', animated:true},
+  {name:'Midnight Focus', bg:'#0b1226', bg2:'#121827', gradient:true, text:'#e6eef8', accent:'#6ee7b7', font:'Inter, Arial, sans-serif', animated:false},
+  {name:'Gold Noir', bg:'#050505', bg2:'#0b0b0b', gradient:false, text:'#f9f3e6', accent:'#d4af37', font:'Poppins, Inter, Arial, sans-serif', animated:false},
+  {name:'Blush Dream', bg:'#fff1f3', bg2:'#fcefee', gradient:true, text:'#2b1b20', accent:'#ff7aa2', font:'Playfair Display, serif', animated:true},
+  {name:'Lavender Calm', bg:'#f3e8ff', bg2:'#e9f0ff', gradient:true, text:'#24142f', accent:'#9b7cff', font:'Playfair Display, serif', animated:true},
+  {name:'Royal Blue', bg:'#0b1226', bg2:'#122447', gradient:true, text:'#e6eef8', accent:'#7dd3fc', font:'Inter, Arial, sans-serif', animated:true}
+];
+
+// populate presets UI
+function renderPresets(){
+  presetGrid.innerHTML='';
+  PRESETS.forEach(p=>{
+    const b = document.createElement('button');
+    b.className='theme-btn';
+    b.textContent = p.name;
+    b.style.background = p.gradient ? `linear-gradient(135deg, ${p.bg}, ${p.bg2})` : p.bg;
+    b.style.color = p.text;
+    b.addEventListener('click', ()=> applyTheme(p));
+    presetGrid.appendChild(b);
+  });
+}
+
+// color helpers
+function hexToRgb(hex){ const h = hex.replace('#',''); return {r:parseInt(h.substring(0,2),16), g:parseInt(h.substring(2,4),16), b:parseInt(h.substring(4,6),16)} }
+function rgba(hex,a){ const c=hexToRgb(hex); return `rgba(${c.r},${c.g},${c.b},${a})` }
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function shade(hex,amt){ const num=parseInt(hex.slice(1),16); const R=(num>>16)+amt; const G=(num>>8&0x00FF)+amt; const B=(num&0x0000FF)+amt; return '#'+(0x1000000+(clamp(R,0,255)<<16)+(clamp(G,0,255)<<8)+clamp(B,0,255)).toString(16).slice(1) }
+
+// apply theme
+function applyTheme(t, savePreview=true){
+  const theme = Object.assign({}, DEFAULT, t);
+  document.documentElement.style.setProperty('--bg', theme.bg);
+  document.documentElement.style.setProperty('--text', theme.text);
+  document.documentElement.style.setProperty('--accent', theme.accent);
+  document.body.style.fontFamily = theme.font;
+  // background
+  if(theme.image){ document.body.style.backgroundImage = `url(${theme.image})`; document.body.style.backgroundSize='cover'; document.body.style.backgroundPosition='center'; }
+  else if(theme.gradient){ document.body.style.background = `linear-gradient(135deg, ${theme.bg}, ${theme.bg2})`; if(theme.animated) document.body.classList.add('animated-bg'); else document.body.classList.remove('animated-bg'); }
+  else { document.body.style.background = theme.bg; document.body.classList.remove('animated-bg'); }
+  // text/accent
+  document.body.style.color = theme.text;
+  document.documentElement.style.setProperty('--accent', theme.accent);
+  // preview panel coloring
+  preview.style.background = rgba(theme.bg2, 0.06);
+  previewContent.style.background = rgba(theme.bg2, 0.04);
+  preview.querySelector('#preview-header').style.background = rgba(theme.accent, 0.12);
+  previewMeta.textContent = `${theme.name} • ${theme.font.split(',')[0]} • ${theme.gradient?'Gradient':'Solid'}`;
+  // sync inputs
+  bgColor.value = theme.bg;
+  bgColor2.value = theme.bg2;
+  useGradient.checked = !!theme.gradient;
+  textColor.value = theme.text;
+  accentColor.value = theme.accent;
+  fontSelect.value = theme.font;
+  // store current applied theme in localStorage for persistence
+  localStorage.setItem('plannerCurrentTheme', JSON.stringify(theme));
+}
+
+// saved themes
+function getSavedThemes(){ return JSON.parse(localStorage.getItem('plannerSavedThemes')||'[]') }
+function renderSavedThemes(){ const arr=getSavedThemes(); savedThemesWrap.innerHTML=''; arr.forEach((t,i)=>{ const b=document.createElement('button'); b.className='saved-theme'; b.textContent = t.name||('Theme '+(i+1)); b.addEventListener('click', ()=> applyTheme(t)); b.addEventListener('contextmenu', e=>{ e.preventDefault(); if(confirm('Delete '+t.name+'?')){ arr.splice(i,1); localStorage.setItem('plannerSavedThemes', JSON.stringify(arr)); renderSavedThemes(); } }); savedThemesWrap.appendChild(b); }) }
+
+// load initial settings and planner data
+function loadInitial(){
+  // load planner data
+  const data = JSON.parse(localStorage.getItem('plannerData')||'{}');
+  titleInput.value = data.title||''; titlePreview.textContent = titleInput.value||'My Planner';
+  dateInput.value = data.date||''; p1.value=data.p1||''; p2.value=data.p2||''; p3.value=data.p3||'';
+  schedule.value = data.schedule||''; notes.value = data.notes||'';
+
+  // load theme settings
+  const saved = JSON.parse(localStorage.getItem('plannerCurrentTheme')||'{}');
+  const savedImage = localStorage.getItem('plannerBgImage');
+  if(Object.keys(saved).length){ if(savedImage){ saved.image = savedImage; } applyTheme(saved); }
+  else applyTheme(DEFAULT);
+
+  renderPresets();
+  renderSavedThemes();
+}
+
+// handlers: inputs -> save immediate & update preview
+[titleInput, dateInput, p1, p2, p3, schedule, notes].forEach(el=> el.addEventListener('input', ()=>{ if(el===titleInput) titlePreview.textContent = titleInput.value||'My Planner'; savePlannerData(); }));
+
+function savePlannerData(){
+  const d = { title:titleInput.value, date:dateInput.value, p1:p1.value, p2:p2.value, p3:p3.value, schedule:schedule.value, notes:notes.value };
+  localStorage.setItem('plannerData', JSON.stringify(d));
+}
+
+// color inputs handlers
+[bgColor,bgColor2,textColor,accentColor,fontSelect,useGradient].forEach(inp=> inp.addEventListener('input', ()=>{
+  applyTheme({ name: themeNameInput.value || 'Custom', bg:bgColor.value, bg2:bgColor2.value, gradient:useGradient.checked, text:textColor.value, accent:accentColor.value, font:fontSelect.value, image: null, animated:false }, true);
+  // clear stored bg image if using colors now
+  localStorage.removeItem('plannerBgImage');
+  localStorage.setItem('plannerCurrentTheme', JSON.stringify({ name: themeNameInput.value || 'Custom', bg:bgColor.value, bg2:bgColor2.value, gradient:useGradient.checked, text:textColor.value, accent:accentColor.value, font:fontSelect.value }));
+}));
+
+// upload background image handler
+bgUpload.addEventListener('change', (e)=>{
+  const f = e.target.files[0]; if(!f) return;
+  const reader = new FileReader(); reader.onload = ev => {
+    const url = ev.target.result;
+    // apply as theme image overlay
+    const cur = JSON.parse(localStorage.getItem('plannerCurrentTheme')||JSON.stringify(DEFAULT));
+    cur.image = url; applyTheme(cur);
+    // store image separately (base64) for persistence
+    localStorage.setItem('plannerBgImage', url);
+    localStorage.setItem('plannerCurrentTheme', JSON.stringify(cur));
+    alert('Background image uploaded and applied.');
+  }; reader.readAsDataURL(f);
+});
+
+// save theme
+saveThemeBtn.addEventListener('click', ()=>{
+  const name = (themeNameInput.value || prompt('Theme name?','My Theme')).trim();
+  const theme = { name, bg:bgColor.value, bg2:bgColor2.value, gradient:useGradient.checked, text:textColor.value, accent:accentColor.value, font:fontSelect.value, image: localStorage.getItem('plannerBgImage')||null };
+  const arr = getSavedThemes(); arr.push(theme); localStorage.setItem('plannerSavedThemes', JSON.stringify(arr)); renderSavedThemes(); alert('Saved "'+name+'" locally.');
+});
+
+// reset to default
+resetBtn.addEventListener('click', ()=>{
+  if(confirm('Reset planner theme to default?')){ localStorage.removeItem('plannerCurrentTheme'); localStorage.removeItem('plannerBgImage'); applyTheme(DEFAULT); }
+});
+
+// save planner data button
+saveDataBtn.addEventListener('click', ()=>{ savePlannerData(); alert('Planner entries saved locally.'); });
+
+// clear data
+clearDataBtn.addEventListener('click', ()=>{
+  if(confirm('Clear planner entries?')){ titleInput.value=''; dateInput.value=''; p1.value=''; p2.value=''; p3.value=''; schedule.value=''; notes.value=''; savePlannerData(); titlePreview.textContent='My Planner'; alert('Cleared entries.'); }
+});
+
+// export/import theme
+exportThemeBtn.addEventListener('click', ()=>{
+  const theme = JSON.parse(localStorage.getItem('plannerCurrentTheme')||JSON.stringify(DEFAULT));
+  const blob = new Blob([JSON.stringify(theme, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download=(theme.name||'theme')+'.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+
+importThemeBtn.addEventListener('click', ()=>{
+  const input = document.createElement('input'); input.type='file'; input.accept='application/json'; input.addEventListener('change', ()=>{
+    const f = input.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = (e)=>{ try{ const t = JSON.parse(e.target.result); applyTheme(t); if(t.image) localStorage.setItem('plannerBgImage', t.image); alert('Imported theme applied.'); }catch(err){ alert('Invalid theme file'); } }; reader.readAsText(f);
+  }); input.click();
+});
+
+// random theme
+applyRandom.addEventListener('click', ()=>{
+  const pick = PRESETS[Math.floor(Math.random()*PRESETS.length)]; applyTheme(pick);
+});
+
+// download snapshot (simple text pdf)
+downloadBtn.addEventListener('click', ()=>{
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.setFontSize(14); doc.text(titleInput.value || 'Vansima Planner', 10, 10);
+  doc.setFontSize(11); doc.text('Date: '+(dateInput.value||'-'), 10, 18);
+  doc.text('Priorities:', 10, 26); doc.text((p1.value||'-')+' / '+(p2.value||'-')+' / '+(p3.value||'-'), 10, 32);
+  doc.text('Schedule:', 10, 42); wrapText(doc, schedule.value||'-', 10, 48, 180, 10);
+  doc.text('Notes:', 10, 120); wrapText(doc, notes.value||'-', 10, 126, 180, 10);
+  doc.save((titleInput.value||'planner')+'.pdf');
+});
+function wrapText(doc, text, x, y, maxWidth, lineHeight){ const words=text.split(/\s+/); let line=''; let curY=y; for(let n=0;n<words.length;n++){ const test = line+words[n]+' '; if(doc.getTextWidth(test)>maxWidth && n>0){ doc.text(line, x, curY); line = words[n]+' '; curY+=lineHeight; } else line = test; } doc.text(line, x, curY); }
+
+// init
+loadInitial();
+
+// auto-save planner data whenever typing
+['input','change'].forEach(ev=>{ [titleInput,dateInput,p1,p2,p3,schedule,notes].forEach(el=>el.addEventListener(ev, savePlannerData)) });
+
+// render saved themes initially
+renderSavedThemes();
+</script>
+</body>
+</html>
