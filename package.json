@@ -1,13 +1,11 @@
 {
-  "name": "vansima_digital_store",
-  "version": "1.0.0",
-  "description": "Vansima checkout server",
-  "main": "server.js",
-  "type": "module",
   "dependencies": {
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
-    "express": "^4.21.2",
-    "stripe": "^12.18.0"
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "nodemailer": "^7.0.10",
+    "path": "^0.12.7",
+    "stripe": "^19.1.0"
   }
 }
