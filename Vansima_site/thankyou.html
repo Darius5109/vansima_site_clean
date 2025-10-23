@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You – Vansima</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: #0b0b0b;
+      color: #d9d9d9;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    h1 {
+      color: #D4AF37;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #d9d9d9;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+    }
+    .downloads {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    a.btn {
+      display: inline-block;
+      background-color: #D4AF37;
+      color: #0b0b0b;
+      text-decoration: none;
+      padding: 15px 30px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: 0.3s ease;
+      width: 260px;
+    }
+    a.btn:hover {
+      background-color: #b18f30;
+    }
+    footer {
+      margin-top: 60px;
+      font-size: 0.9rem;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <h1>Thank You for Your Purchase!</h1>
+  <p>Your payment was successful. Download your Vansima digital products below 👇</p>
+
+  <div class="downloads">
+  <a id="download-journal" href="downloads/Vansima_Digital_Journal_All_Styles.html" download class="btn">📘 Download Journal</a>
+  <a id="download-planner" href="downloads/Vansima_Digital_Planner_All_Styles_Hybrid.html" download class="btn">📒 Download Planner</a>
+  <a id="download-ebook" href="downloads/productivity_lifestyle_guide_designed_no_pagebreak.pdf" download class="btn">📖 Download Ebook</a>
+</div>
+
+  <footer>
+    Need help? Contact <a href="mailto:support@vansima.us" style="color:#D4AF37;">support@vansima.us</a>
+  </footer>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const product = params.get("product");
+
+    const journalBtn = document.getElementById("download-journal");
+    const plannerBtn = document.getElementById("download-planner");
+    const ebookBtn = document.getElementById("download-ebook");
+
+    // Hide all by default
+    journalBtn.style.display = "none";
+    plannerBtn.style.display = "none";
+    ebookBtn.style.display = "none";
+
+    // Show based on purchase
+    if (product === "journal") {
+      journalBtn.style.display = "block";
+    } else if (product === "planner") {
+      plannerBtn.style.display = "block";
+    } else if (product === "ebook") {
+      ebookBtn.style.display = "block";
+    } else if (product === "bundle") {
+      journalBtn.style.display = "block";
+      plannerBtn.style.display = "block";
+      ebookBtn.style.display = "block";
+    } else {
+      // fallback for test mode (show all)
+      journalBtn.style.display = "block";
+      plannerBtn.style.display = "block";
+      ebookBtn.style.display = "block";
+    }
+  });
+</script>
+</body>
+</html>
