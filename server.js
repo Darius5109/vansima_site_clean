@@ -6,7 +6,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: "./.env" });
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const app = express();
@@ -18,7 +18,10 @@ app.use(bodyParser.raw({ type: "application/json" }));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(express.static("public")); // static front-end folder
+app.use(express.static(path.join(__dirname, "vansima_site")))
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "vansima_site", "index.html"));
+});
 
 // ✅ Stripe checkout session
 app.post("/create-checkout-session", async (req, res) => {
@@ -47,5 +50,19 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
+app.get("/test-stripe", (req, res) => {
+  res.send(`Stripe key is active: ${process.env.STRIPE_SECRET_KEY.startsWith("sk_") ? "✅ Yes" : "❌ No"}`);
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+// ✅ Test route to confirm Stripe connection
+app.get("/test-stripe", (req, res) => {
+  res.send(
+    `Stripe key is active: ${
+      process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY.startsWith("sk_")
+        ? "✅ Yes"
+        : "❌ No"
+    }`
+  );
+});
