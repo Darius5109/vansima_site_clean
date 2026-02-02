@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop | Vansima</title>
+  <style>
+    /* Basic styles for the shop page */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    header {
+    background-color: #0d0d0d;
+    color: white;
+    padding: 1.2rem 2rem;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin: 0 1em;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    nav ul li a.active {
+      text-decoration: underline;
+    }
+
+    .shop-hero {
+      text-align: center;
+      padding: 2em 1em;
+      background-color: #e0e0e0;
+    }
+
+    #shop {
+      padding: 2em 1em;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2em;
+    }
+
+    .product-card {
+      background-color: rgba(255, 255, 255, 0.704);
+      border: 1px solid #ddd;
+      padding: 1em;
+      text-align: center;
+    }
+
+    .product-card img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 16px;
+    }
+
+    .add-to-cart {
+      background-color: #f69b40;
+      color: white;
+      border: none;
+      padding: 0.5em 1em;
+      cursor: pointer;
+    }
+
+   .site-footer {
+  background-color: #0f172a; /* deep corporate navy */
+  color: #e5e7eb;
+  padding: 3rem 2rem 1.5rem;
+  font-size: 0.9rem;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-brand h3 {
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+}
+
+.footer-brand p {
+  max-width: 280px;
+  color: #9ca3af;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #e5e7eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  border-top: 1px solid #1f2933;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.8rem;
+}
+
+.product-variant {
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+  </style>
+
+  <!-- Link your main stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">VANSIMA</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cart.html" class="active">Cart</a></li>
+        <li><a href="vansima_hub_live.html">Hub</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- SHOP HERO -->
+  <section class="shop-hero">
+    <h1>Build Focus. Execute Your Vision.</h1>
+    <p>Designed to help you stay aligned, focused, and unstoppable.</p>
+  </section>
+
+  <!-- SHOP SECTION -->
+  <section id="shop">
+
+    <div class="product-grid">
+
+      <!-- PRODUCT CARD -->
+      <div class="product-card">
+  <img src="./ChatGPT Image Jan 31, 2026 at 02_58_47 PM.png" alt="Vansima eBook">
+
+  <h3>Vansima eBook</h3>
+
+  <p class="product-desc">
+    A guided framework to build focus, discipline, and intentional execution.
+  </p>
+
+  <p class="price">$12.99</p>
+
+  <button 
+  class="btn-primary add-to-cart"
+  data-id="ebook-001"
+  data-name="Vansima eBook"
+  data-price="12.99">
+  Add to Cart
+</button>
+
+</div>
+
+    <div class="product-grid">
+
+  <!-- HEADPHONES - BLACK -->
+  <div class="product-card">
+    <img src="./ChatGPT Image Jan 27, 2026 at 12_34_13 AM.png" alt="Vansima Headphones - Black">
+
+    <h3>VX-1 PRO</h3>
+    <p class="product-variant">Executive Edition</p>
+
+    <p class="product-description">
+      Noise-isolating headphones designed for deep focus and productivity.
+    </p>
+
+    <p class="product-price">$299.99</p>
+
+    <button disabled>COMING SOON</button>
+  </div>
+
+  <!-- HEADPHONES - SILVER -->
+  <div class="product-card">
+    <img src="./958BB340-BB02-4E75-BD6E-C9614B56A996.PNG" alt="Vansima Headphones - Silver">
+
+    <h3>VX-1 PRO</h3>
+    <p class="product-variant">Champagne Edition</p>
+
+    <p class="product-description">
+      Clean, modern sound with intentional design for creators.
+    </p>
+
+    <p class="product-price">$299.99</p>
+
+    <button disabled>COMING SOON</button>
+  </div>
+
+  <!-- HEADPHONES - ROSE GOLD -->
+  <div class="product-card">
+    <img src="./9CBCE5A7-6FB5-4512-9A70-5619E37D73BA.PNG" alt="Vansima Headphones - Rose Gold">
+
+    <h3>VX-1 PRO</h3>
+    <p class="product-variant">Holiday Edition (Limited)</p>
+
+    <p class="product-description">
+      Elevated style with powerful focus-driven sound.
+    </p>
+
+    <p class="product-price">$299.99</p>
+
+    <button disabled>COMING SOON</button>
+  </div>
+
+  <!-- RICH & RESPONSIBLE BOOK -->
+  <div class="product-card">
+    <img src="./ChatGPT Image Jan 27, 2026 at 12_34_01 AM.png" alt="Rich and Responsible Book">
+
+    <h3>Rich & Responsible</h3>
+
+    <p class="product-description">
+      A modern guide to wealth, discipline, and intentional success.
+    </p>
+
+    <p class="product-price">$24.99</p>
+
+   <button disabled>COMING SOON</button>
+  </div>
+
+</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Vansima. All rights reserved.</p>
+  </footer>
+
+  <!-- JS (only if you already have cart logic) -->
+  <script src="cart.js"></script>
+
+  <script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  document.querySelectorAll(".add-to-cart").forEach(button => {
+    button.addEventListener("click", () => {
+      const product = {
+        id: button.dataset.id,
+        name: button.dataset.name,
+        price: button.dataset.price,
+        quantity: 1
+      };
+
+      const existing = cart.find(item => item.id === product.id);
+
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push(product);
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      alert("Added to cart 🛒");
+    });
+  });
+</script>
+
+</body>
+</html>

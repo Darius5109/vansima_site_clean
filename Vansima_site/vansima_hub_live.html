@@ -8,215 +8,286 @@
   <canvas id="particleCanvas"></canvas>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: #0a0a0a;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-      text-align: center;
-    }
+  html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body {
+  background: #565683;
+}
 
-    h1 {
-      font-size: 3rem;
-      color: #480ceb;
-      text-shadow: 0 0 10px 00ffe5;
-      margin-bottom: 10px;
-    }
+  .vansima-hub {
+  min-height: 100vh;
+  padding: 100px 40px;
+  background: linear-gradient(
+      rgba(55, 56, 59, 0.75),
+      rgba(5, 5, 5, 0.9)
+    ),
+    url('CB513702-8B01-47CE-90C8-B856C78F3156.jpeg') center/cover no-repeat;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
 
-    p {
-      font-size: 1.2rem;
-      color: #ccc;
-      margin-bottom: 40px;
-    }
+.hub-title {
+  font-size: 3.5rem;
+  letter-spacing: 6px;
+  color: #00fff5;
+  text-shadow: 0 0 30px rgba(0,255,245,0.6);
+}
 
-    form {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+.hub-subtitle {
+  margin: 20px auto 60px;
+  max-width: 600px;
+  opacity: 0.85;
+}
 
-    input[type="email"] {
-      padding: 15px;
-      border-radius: 5px;
-      border: none;
-      width: 300px;
-      font-size: 1rem;
-    }
+.hub-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
 
-    button {
-      padding: 15px 25px;
-      border-radius: 5px;
-      border: none;
-      background: #0ff;
-      color: #000;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+.hub-card {
+  width: 300px;
+  padding: 32px;
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 50px rgba(0,255,245,0.1);
+  transition: all 0.4s ease;
+  text-align: left;
+}
 
-    button:hover {
-      background: #f0f;
-      color: #fff;
-      box-shadow: 0 0 15px #f0f, 0 0 25px #0ff;
-    }
+.hub-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 70px rgba(0,255,245,0.35);
+}
 
-    footer {
-      position: absolute;
-      bottom: 20px;
-      font-size: 0.9rem;
-      color: rgb(255, 255, 0);
-    }
+.hub-card h3 {
+  color: #00fff5;
+  margin: 14px 0;
+}
 
-    /* Animated background grid */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(0,255,255,0.1) 1px, transparent 1px);
-      background-size: 50px 50px;
-      animation: moveGrid 20s linear infinite;
-      z-index: -1;
-    }
+.hub-tag {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  opacity: 0.7;
+}
 
-    @keyframes moveGrid {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(-50px, -50px); }
-    }
+.hub-card button {
+  margin-top: 20px;
+  background: none;
+  border: 1px solid #00fff5;
+  color: #00fff5;
+  padding: 10px 16px;
+  cursor: pointer;
+}
 
-    .quote {
-      margin-top: 40px;
-      font-size: 1.2rem;
-      font-style: italic;
-      color: rgb(17, 136, 45);
-      text-shadow: 0 0 5px rgb(0, 4, 255);
-    }
+.hub-card button:hover:not(:disabled) {
+  background: #00fff5;
+  color: rgb(6, 6, 6);
+}
 
-    #particleCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -2;
-    }
-    
-   .main-content {
-    position: relative;
-    z-index: 1;
-   }
+.hub-card button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+#particleCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hub-news {
+  margin-top: 80px;
+  padding: 50px 20px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+}
+
+.hub-news h2 {
+  color: #7fffd4;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.hub-subtext {
+  color: #cfd8dc;
+  margin-bottom: 30px;
+}
+
+.hub-email-form {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hub-email-form input {
+  padding: 12px 16px;
+  width: 260px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.hub-email-form button {
+  padding: 12px 22px;
+  background: #7fffd4;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.hub-email-form button:hover {
+  opacity: 0.85;
+}
+
+.hub-message {
+  margin-top: 15px;
+  color: #7fffd4;
+}
   </style>
 </head>
 <body>
 
-  <h1>Vansima Hub</h1>
-  <p>The Future is Yours.</p>
-  <p>Subscribe for updates, exclusive offers, and daily motivation!</p>
+  <section class="vansima-hub">
 
-  <form onsubmit="subscribe(event)">
-    <input type="email" placeholder="Enter your email..." required>
-    <button type="submit">Subscribe</button>
+  <h1 class="hub-title">VANSIMA HUB</h1>
+  <p class="hub-subtitle">
+    Exclusive access to what’s coming next.<br>
+  </p>
+
+  <div class="hub-grid">
+
+    <div class="hub-card film">
+      <span class="hub-tag">EXCLUSIVE PREVIEW</span>
+      <h3>Spark City</h3>
+      <p>
+        A cinematic story about discipline, purpose, and becoming.
+        Early scenes. Private notes.
+      </p>
+      <button>Enter Preview</button>
+    </div>
+
+    <div class="hub-card book">
+      <span class="hub-tag">NEW BOOK</span>
+      <h3>Rich & Responsible</h3>
+      <p>
+        Early chapters and frameworks before public release.
+      </p>
+      <button>Read First Pages</button>
+    </div>
+
+    <div class="hub-card audio">
+      <span class="hub-tag">COMING SOON</span>
+      <h3>VX-1 Pro Studio Headphones</h3>
+      <p>
+        Sound built for focus, discipline, and creative flow.
+      </p>
+      <button disabled>In Development</button>
+    </div>
+
+  </div>
+</section>
+
+<section class="hub-news">
+  <h2>News & Updates</h2>
+  <p class="hub-subtext">
+    Get exclusive updates, early access, and private drops from Vansima Hub.
+  </p>
+
+  <form id="hubEmailForm" class="hub-email-form">
+    <input 
+      type="email" 
+      id="hubEmail"
+      placeholder="Enter your email"
+      required
+    />
+    <button type="submit">Notify Me</button>
   </form>
 
-  <div id="dailyQuote" class="quote-box">
-    <p id="quote-text">Loading your daily motivation...</p>
-    <p id="quote-author"></p>
-  </div>
+  <p id="hubMessage" class="hub-message"></p>
+</section>
 
   <footer>
-    &copy; 2025 Vansima. All rights reserved.
+    &copy; 2026 Vansima. All rights reserved.
   </footer>
+</div>
 
-  <script>
-async function getDailyQuote() {
-  const quoteText = document.getElementById('quote-text');
-  const quoteAuthor = document.getElementById('quote-author');
-
-  try {
-    const response = await fetch('https://api.quotable.io/random');
-    const data = await response.json();
-
-    quoteText.textContent = `"${data.content}"`;
-    quoteAuthor.textContent = `– ${data.author}`;
-  } catch (error) {
-    quoteText.textContent = "Couldn’t load your daily quote. Try again later!";
-    console.error("Error fetching quote:", error);
-  }
-}
-
-getDailyQuote();
-</script>
-
-
-  <script>
+<script>
 const canvas = document.getElementById("particleCanvas");
 const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
 
 let particles = [];
 
-class Particle {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2 + 1;
-    this.speedX = (Math.random() - 0.5) * 0.5;
-    this.speedY = (Math.random() - 0.5) * 0.5;
-    this.alpha = Math.random() * 0.5 + 0.3;
-  }
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-    }
-  }
-  draw() {
-    ctx.fillStyle = `rgba(0, 255, 255, ${this.alpha})`;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
-
-function initParticles() {
-  particles = [];
-  for (let i = 0; i < 100; i++) {
-    particles.push(new Particle());
-  }
-}
-
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (let i = 0; i < particles.length; i++) {
-    particles[i].update();
-    particles[i].draw();
-  }
-  requestAnimationFrame(animateParticles);
-}
-
-initParticles();
-animateParticles();
-
-window.addEventListener("resize", () => {
+function resize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  initParticles();
-});
+}
+window.addEventListener("resize", resize);
+resize();
+
+for (let i = 0; i < 120; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5 + 0.5,
+    dx: (Math.random() - 0.5) * 0.3,
+    dy: (Math.random() - 0.5) * 0.3
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(0, 255, 220, 0.6)";
+
+  particles.forEach(p => {
+    p.x += p.dx;
+    p.y += p.dy;
+
+    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
 </script>
-</div>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+  emailjs.init("YOUR_PUBLIC_KEY");
+
+  document.getElementById("hubEmailForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+      user_email: document.getElementById("hubEmail").value
+    }).then(() => {
+      document.getElementById("hubMessage").innerText =
+        "You're officially in. Updates coming soon.";
+      this.reset();
+    });
+  });
+</script>
+
 </body>
 </html>
