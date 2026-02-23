@@ -5,7 +5,6 @@ import nodemailer from 'nodemailer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Replace this with your actual Stripe secret key from your dashboard   
 import dotenv from 'dotenv';
 dotenv.config();
 

@@ -47,10 +47,44 @@
   <!-- ✅ Cart summary -->
   <div class="summary">
     <p id="cart-summary">Loading your cart...</p>
+    <p id="cart-total" style="display:none;">0</p>
   </div>
 
   <!-- ✅ Stripe / Apple Pay Script -->
-  <script src="https://js.stripe.com/v3/"></script>
+   <script>
+  function getCart() {
+    try {
+      return JSON.parse(localStorage.getItem("cart")) || [];
+    } catch {
+      return [];
+    }
+  }
+
+  function calcCartTotal(cart) {
+    // cart item should have price + quantity
+    return cart.reduce((sum, item) => {
+      const price = Number(item.price || 0);
+      const qty = Number(item.quantity || 1);
+      return sum + (price * qty);
+    }, 0);
+  }
+
+  const cart = getCart();
+  const total = calcCartTotal(cart);
+
+  // Show summary
+  const summaryEl = document.getElementById("cart-summary");
+  if (summaryEl) {
+    summaryEl.textContent = `Total: $${total.toFixed(2)} for ${cart.length} item(s).`;
+  }
+
+  // Store total for other scripts
+  const totalEl = document.getElementById("cart-total");
+  if (totalEl) {
+    totalEl.textContent = total.toFixed(2);
+  }
+</script>
+
   <script>
     const stripe = Stripe("pk_live_51SBg7vB48uhmtdR3ddMMaAgdUY9ub9GhQKzMwdvI7AhICGJLcP5jqrrT9qEllE7DD96NPohRCnLa6M3z2sRKxfir00euYSXTZv"); // your real publishable key
 
@@ -58,7 +92,10 @@
     const paymentRequest = stripe.paymentRequest({
       country: "US",
       currency: "usd",
-      total: { label: "Vansima Purchase", amount: 2998 }, // $29.98 in cents
+      total: {
+        label: "Vansima Purchase",
+        amount: totalCents,
+      },
       requestPayerName: true,
       requestPayerEmail: true,
     });
@@ -109,33 +146,83 @@
   </script>
 
   <!-- ✅ PayPal Integration -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AbKkAaeDSoseP4ZohpVt5B7lZRHr85bYYtUu-sCgsnZxE6d6CJPIUoVwgBpkOYgDeOSmRpilj5S1Hjlh&currency=USD"></script>
-  <div id="paypal-button-container"></div>
-  <script>
-    paypal.Buttons({
+<script>
+    // ✅ Optional: Load cart total from localStorage for PayPal
+    function getCartTotal() {
+      const cart = JSON.parse(localStorage.getItem("vansima_cart_v1") || "[]");
+      return cart.reduce((sum, item) => {
+        const price = Number(item.price) || 0;
+        const qty = Number(item.qty ?? item.quantity ?? 1);
+        return sum + price * qty;
+      }, 0).toFixed(2);
+    }
+    </script>
+
+    <div id="paypal-button-container"></div>
+    
+ <script src="https://www.paypal.com/sdk/js?client-id=AbKkAaeDSoseP4ZohpVt5B7lZRHr85bYYtUu-sCgsnZxE6d6CJPIUoVwgBpkOYgDeOSmRpilj5S1Hjlh"></script>
+
+<script>
+  const CART_KEY = "vansima_cart_v1";
+
+  function getCartTotal() {
+    const cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+
+    const total = cart.reduce((sum, item) => {
+      const price = Number(item.price) || 0;
+      const qty = Number(item.qty ?? item.quantity ?? 1); // supports qty OR quantity
+      return sum + price * qty;
+    }, 0);
+
+    return Number(total.toFixed(2));
+  }
+
+  // ✅ Render PayPal Buttons (Apple Pay shows automatically when eligible)
+  paypal
+    .Buttons({
       style: {
         layout: "vertical",
         color: "gold",
         shape: "rect",
         label: "paypal",
       },
-      createOrder: function (data, actions) {
+
+      createOrder: (data, actions) => {
+        const total = getCartTotal();
+
+        if (!total || total <= 0) {
+          alert("Your cart is empty. Please add items before checkout.");
+          return;
+        }
+
         return actions.order.create({
-          purchase_units: [{ amount: { value: "29.98" } }],
+          purchase_units: [
+            {
+              amount: {
+                value: total.toFixed(2), // ✅ dynamic total
+              },
+            },
+          ],
         });
       },
-      onApprove: function (data, actions) {
-        return actions.order.capture().then(function (details) {
-          alert("Payment completed by " + details.payer.name.given_name + "!");
+
+      onApprove: (data, actions) => {
+        return actions.order.capture().then((details) => {
+          // ✅ optional: clear cart after successful payment
+          // localStorage.removeItem(CART_KEY);
+
+          // ✅ redirect
           window.location.href = "/success.html";
         });
       },
-      onError: function (err) {
-        console.error(err);
-        alert("Something went wrong with PayPal checkout.");
+
+      onError: (err) => {
+        console.error("PayPal error:", err);
+        alert("Something went wrong with checkout. Please try again.");
       },
-    }).render("#paypal-button-container");
-  </script>
+    })
+    .render("#paypal-button-container");
+</script>
 
   <!-- ✅ Simple cart display -->
   <script>
